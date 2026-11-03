@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+@theme {
+  --color-cream: #fbf3e4;
+  --color-paper: #fffaf0;
+  --color-cocoa: #4a2f22;
+  --color-brown: #7a4e36;
+  --color-peach: #ffd9c2;
+  --color-mint: #cdebdc;
+  --color-lav: #ddd3f2;
+  --color-butter: #fff0b3;
+  --color-sky: #cde4f5;
+  --color-rose: #f8cbd8;
+  --font-display: "Bricolage Grotesque", "Noto Nastaliq Urdu", system-ui,
+    sans-serif;
+  --font-body: "DM Sans", "Noto Nastaliq Urdu", system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  background-color: var(--color-cream);
+  background-image: radial-gradient(
+    rgba(122, 78, 54, 0.09) 1px,
+    transparent 1px
+  );
+  background-size: 18px 18px;
+  color: var(--color-cocoa);
+  font-family: var(--font-body);
+}
+[dir="rtl"] body,
+[dir="rtl"] {
+  line-height: 2;
+}
+[dir="rtl"] .font-display {
+  letter-spacing: 0;
+}
+
+/* A "patch": a piece of fabric stitched onto the page */
+.patch {
+  outline: 6px solid var(--patch-bg, var(--color-paper));
+  outline-offset: -1px;
+  background: var(--patch-bg, var(--color-paper));
+
+  padding: 1.25rem;
+  margin: 8px;
+}
+.patch-lg {
+}
+
+.tape {
+  background: rgba(255, 240, 179, 0.9);
+
+  padding: 0.15rem 0.7rem;
+}
+
+.btn {
+  border: 2px solid var(--color-cocoa);
+
+  padding: 0.6rem 1.3rem;
+  font-weight: 700;
+  background: var(--color-cocoa);
+  color: var(--color-cream);
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.btn:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+}
+.btn:active:not(:disabled) {
+  transform: translate(2px, 2px);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn-soft {
+  background: var(--color-paper);
+  color: var(--color-cocoa);
+}
+.btn-soft:hover:not(:disabled) {
+}
+
+.chip {
+  border: 2px solid var(--color-cocoa);
+  border-radius: 999px;
+  padding: 0.25rem 0.9rem;
+  background: var(--color-paper);
+  cursor: pointer;
+  font-weight: 500;
+}
+.chip[aria-pressed="true"] {
+  background: var(--color-cocoa);
+  color: var(--color-cream);
+}
+
+:focus-visible {
+  outline: none;
+}
+
+.field {
+  width: 100%;
+  background: var(--color-paper);
+
+  border-radius: 14px;
+  padding: 0.6rem 0.9rem;
+  font: inherit;
+  color: inherit;
+}
+
+/* before/after slider */
+.compare {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 2px solid var(--color-cocoa);
+  background: #000;
+  touch-action: pan-y;
+}
+.compare img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.compare .top {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.compare input[type="range"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: ew-resize;
+  margin: 0;
+}
+.compare .handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--color-cream);
+  box-shadow: 0 0 0 2px var(--color-cocoa);
+  pointer-events: none;
+}
+
+@keyframes stitch {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+.spinner {
+  width: 46px;
+  height: 46px;
+}
+.spinner circle {
+  fill: none;
+  stroke: var(--color-cocoa);
+  stroke-width: 4;
+  stroke-dasharray: 8 8;
+  animation: stitch 0.9s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .spinner circle {
+    animation: none;
+  }
+  .btn {
+    transition: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
