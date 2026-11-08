@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "node --watch src/index.js",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "test:cf": "node scripts/test-cloudflare.js"
   },
   "dependencies": {
     "@google/genai": "^2.32.0",

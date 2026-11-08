@@ -1,4 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
+import { buildEditPrompt } from '../prompts.js';
+import { parseIdea } from './shared.js';
 
 let client;
 const ai = () => {
@@ -19,20 +21,12 @@ export async function makeIdea({ buffer, mimeType, prompt }) {
     contents: [{ role: 'user', parts: [imagePart(buffer, mimeType), { text: prompt }] }],
     config: { responseMimeType: 'application/json', temperature: 1 },
   });
-  const raw = (res.text || '').replace(/```json|```/g, '').trim();
-  let idea;
-  try {
-    idea = JSON.parse(raw);
-  } catch {
-    throw new Error('The AI answered in a strange format. Please try again.');
-  }
-  idea.steps = Array.isArray(idea.steps) ? idea.steps : [];
-  idea.toBuy = Array.isArray(idea.toBuy) ? idea.toBuy : [];
-  idea.haveMaterials = Array.isArray(idea.haveMaterials) ? idea.haveMaterials : [];
-  return idea;
+  return parseIdea(res.text || '');
 }
 
-export async function makeVisual({ buffer, mimeType, prompt }) {
+// Gemini EDITS the user's photo, so the result lines up with the original (edited: true)
+export async function makeVisual({ buffer, mimeType, visualPrompt, mode, style }) {
+  const prompt = buildEditPrompt({ visualPrompt, mode, style });
   const res = await ai().models.generateContent({
     model: IMAGE_MODEL(),
     contents: [{ role: 'user', parts: [{ text: prompt }, imagePart(buffer, mimeType)] }],
@@ -41,5 +35,5 @@ export async function makeVisual({ buffer, mimeType, prompt }) {
   const parts = res.candidates?.[0]?.content?.parts || [];
   const img = parts.find((p) => p.inlineData?.data);
   if (!img) throw new Error('The AI could not draw a picture this time. Try again.');
-  return `data:${img.inlineData.mimeType || 'image/png'};base64,${img.inlineData.data}`;
+  return { image: `data:${img.inlineData.mimeType || 'image/png'};base64,${img.inlineData.data}`, edited: true };
 }

@@ -7,6 +7,14 @@ services:
     startCommand: npm start
     plan: free
     envVars:
+      - key: TEXT_PROVIDER
+        value: gemini
+      - key: IMAGE_PROVIDER
+        value: cloudflare
+      - key: CLOUDFLARE_ACCOUNT_ID
+        sync: false
+      - key: CLOUDFLARE_API_TOKEN
+        sync: false
       - key: GEMINI_API_KEY
         sync: false
       - key: CLIENT_URL

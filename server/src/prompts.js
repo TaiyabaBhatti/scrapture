@@ -45,11 +45,11 @@ Return ONLY valid JSON (no markdown fences) with exactly this shape:
   "tip": string,
   "visualPrompt": string
 }
-"visualPrompt" = one detailed English paragraph describing exactly what the finished result looks like in the photo (colours, patterns, placement), so an image model can edit the photo.
+"visualPrompt" = one detailed English paragraph (max 900 characters) describing the finished scene: first the original object or space exactly as in the photo (shape, size, colour, material, surroundings), then what the DIY changes (colours, patterns, placement). It must make sense on its own, because some image models only receive this text and not the photo.
 If the photo is unclear or shows nothing usable, still return the JSON with a best guess and say in "tip" what photo would work better.`;
 }
 
-export function buildVisualPrompt({ visualPrompt, mode, style }) {
+export function buildEditPrompt({ visualPrompt, mode, style }) {
   const keep =
     mode === 'space'
       ? 'the same room, walls, floor, door, camera angle and lighting'
@@ -58,4 +58,10 @@ export function buildVisualPrompt({ visualPrompt, mode, style }) {
 Result: ${visualPrompt}
 Look: ${STYLES[style] || STYLES.boho}.
 Photorealistic, achievable by hand with simple materials. No text, no watermark, no people.`;
+}
+
+// For text-to-image models (e.g. FLUX): they never see the photo, so the prompt must stand alone
+export function buildScenePrompt({ visualPrompt, mode, style }) {
+  const shot = mode === 'space' ? 'Wide interior photo of a room corner.' : 'Close-up photo of a handmade decorated object.';
+  return `${shot} ${visualPrompt} Look: ${STYLES[style] || STYLES.boho}. Natural daylight, realistic, achievable by hand with simple materials. No text, no watermark, no people.`.slice(0, 2000);
 }
