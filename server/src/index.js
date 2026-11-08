@@ -21,7 +21,7 @@ const origins = (process.env.CLIENT_URL || "http://localhost:5173")
 
 const allowedOrigins = [
   "http://localhost:5173", // For local frontend testing
-  "https://scrapture-jjz9t7mhd-tayyababhatti89-9064s-projects.vercel.app", // Your live deployed frontend URL
+  "https://scrapture-mu.vercel.app", // Your live deployed frontend URL
 ];
 
 app.use(
