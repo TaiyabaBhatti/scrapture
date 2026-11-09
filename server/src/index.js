@@ -19,15 +19,10 @@ const origins = (process.env.CLIENT_URL || "http://localhost:5173")
   .split(",")
   .map((s) => s.trim());
 
-const allowedOrigins = [
-  "http://localhost:5173", // For local frontend testing
-  "https://scrapture-mu.vercel.app", // Your live deployed frontend URL
-];
-
 app.set("trust proxy", 1);
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://scrapture-xit7.vercel.app/"],
+    origin: ["http://localhost:5173", "https://scrapture-xit7.vercel.app"],
     credentials: true,
   })
 );
