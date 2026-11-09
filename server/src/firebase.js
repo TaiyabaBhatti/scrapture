@@ -5,11 +5,12 @@ import fs from "fs";
 let db = null;
 try {
   let cred;
-  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+  if (process.env.FIREBASE_SERVICE_ACCOUNT_BASE64) {
     cred = JSON.parse(
-      Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT, "base64").toString(
-        "utf8"
-      )
+      Buffer.from(
+        process.env.FIREBASE_SERVICE_ACCOUNT_BASE64,
+        "base64"
+      ).toString("utf8")
     );
   } else if (fs.existsSync("./serviceAccountKey.json")) {
     cred = JSON.parse(fs.readFileSync("./serviceAccountKey.json", "utf8"));
@@ -26,5 +27,5 @@ try {
     "Firebase: could not start (" + e.message + "), gallery is disabled"
   );
 }
-console.log("Hellow we are here");
+
 export { db, FieldValue };
