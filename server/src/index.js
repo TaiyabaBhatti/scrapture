@@ -27,10 +27,7 @@ const allowedOrigins = [
 app.set("trust proxy", 1);
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://your-frontend-project.vercel.app",
-    ],
+    origin: ["http://localhost:5173", "https://scrapture-xit7.vercel.app/"],
     credentials: true,
   })
 );
