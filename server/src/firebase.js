@@ -5,12 +5,11 @@ import fs from "fs";
 let db = null;
 try {
   let cred;
-  if (process.env.FIREBASE_SERVICE_ACCOUNT_BASE64) {
+  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
     cred = JSON.parse(
-      Buffer.from(
-        process.env.FIREBASE_SERVICE_ACCOUNT_BASE64,
-        "base64"
-      ).toString("utf8")
+      Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT, "base64").toString(
+        "utf8"
+      )
     );
   } else if (fs.existsSync("./serviceAccountKey.json")) {
     cred = JSON.parse(fs.readFileSync("./serviceAccountKey.json", "utf8"));
