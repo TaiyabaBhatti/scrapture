@@ -26,5 +26,5 @@ try {
     "Firebase: could not start (" + e.message + "), gallery is disabled"
   );
 }
-
+console.log("Hellow we are here");
 export { db, FieldValue };
