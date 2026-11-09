@@ -24,21 +24,16 @@ const allowedOrigins = [
   "https://scrapture-mu.vercel.app", // Your live deployed frontend URL
 ];
 
+app.set("trust proxy", 1);
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // allow requests with no origin (like mobile apps, curl, or Postman)
-      if (!origin || allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-      return callback(new Error("CORS policy violation"));
-    },
+    origin: [
+      "http://localhost:5173",
+      "https://your-frontend-project.vercel.app",
+    ],
     credentials: true,
   })
 );
-
-app.set("trust proxy", 1);
-app.use(cors({ origin: allowedOrigins }));
 app.use(express.json({ limit: "15mb" }));
 
 const upload = multer({
@@ -276,6 +271,11 @@ app.use((err, req, res, next) => {
   res.status(status).json({ error: message });
 });
 
-app.listen(PORT, () =>
-  console.log(`Scrapture API on http://localhost:${PORT}`)
-);
+// Only listen locally, export app for Vercel serverless runtime
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () =>
+    console.log(`Scrapture API on http://localhost:${PORT}`)
+  );
+}
+
+export default app;
